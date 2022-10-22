@@ -15,7 +15,7 @@ import multer from 'multer'
 
 mongoose
 	.connect(
-		'mongodb+srv://admin:qwerty12345@cluster0.srt50om.mongodb.net/?retryWrites=true&w=majority'
+		'mongodb+srv://admin:qwerty12345@cluster0.rzbq4j8.mongodb.net/blog?retryWrites=true&w=majority'
 	)
 	.then(() => console.log('Server BD Connected...'))
 	.catch(() => console.log('Server BD Connected Error...'))
@@ -24,10 +24,10 @@ const app = express()
 app.use(express.json())
 
 const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
+	destination: (_, __, cb) => {
 		cb(null, 'uploads')
 	},
-	filename: (req, file, cb) => {
+	filename: (_, file, cb) => {
 		cb(null, file.originalname)
 	},
 })
@@ -35,12 +35,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 // Upload Images
-
-app.post('/upload', checkAuth, upload.single('file'), (req, res) => {
-	console.log(req)
-	// res.json({
-	// 	url: `/uploads/${req.file.originalname}`,
-	// })
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+	res.json({
+		url: `/uploads/${req.file.originalname}`,
+	})
 })
 
 // { User}
